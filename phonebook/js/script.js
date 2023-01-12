@@ -30,7 +30,7 @@ const data = [
     const container = document.createElement('div');
     container.classList.add('container');
     return container;
-  }
+  };
 
 
   const createHeader = () => {
@@ -99,7 +99,7 @@ const data = [
     `);
     const tbody = document.createElement('tbody');
 
-    table.append(thead,tbody);
+    table.append(thead, tbody);
     table.tbody = tbody;
 
     return table;
@@ -158,11 +158,11 @@ const data = [
     const footerContainer = createContainer();
     footer.append(footerContainer);
     footer.footerContainer = footerContainer;
-    
+
     footerContainer.textContent = `Все права защищены © ${title}`;
 
     return footer;
-  }
+  };
 
 
   const renderPhoneBook = (app, title) => {
@@ -229,10 +229,10 @@ const data = [
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
-    const { list } = phoneBook;
+    const {list} = phoneBook;
 
     renderContacts(list, data);
-    //Функционал
+    // Функционал
   };
 
   window.phoneBookInit = init;
