@@ -233,12 +233,16 @@ const data = [
 
   const hoverRow = (allRow, logo) => {
     const text = logo.textContent;
+    const edit = document.createElement('button');
+    edit.classList.add('edit-icon', 'ml-3');
     allRow.forEach(contact => {
       contact.addEventListener('mouseenter', () => {
         logo.textContent = contact.phoneLink.textContent;
+        contact.phoneLink.insertAdjacentElement('afterend', edit);
       });
       contact.addEventListener('mouseleave', () => {
         logo.textContent = text;
+        edit.remove();
       });
     });
   };
