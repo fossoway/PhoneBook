@@ -92,11 +92,12 @@ const data = [
     thead.insertAdjacentHTML('beforeend', `
       <tr>
         <th class="delete">Удалить</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
+        <th class="name">Имя</th>
+        <th class="surname">Фамилия</th>
         <th>Телефон</th>
       </tr>
     `);
+    table.thead = thead;
     const tbody = document.createElement('tbody');
 
     table.append(thead, tbody);
@@ -191,6 +192,7 @@ const data = [
 
     return {
       list: table.tbody,
+      thead: table.thead,
       logo,
       btnAdd: buttonGroup.btns[0],
       btnDel: buttonGroup.btns[1],
@@ -211,8 +213,10 @@ const data = [
 
     const tdName = document.createElement('td');
     tdName.textContent = name;
+    tr.tdName = name;
     const tdSurname = document.createElement('td');
     tdSurname.textContent = surname;
+    tr.tdSurname = surname;
     const tdPhone = document.createElement('td');
     const phoneLink = document.createElement('a');
     phoneLink.href = `tel:${phone}`;
@@ -255,6 +259,7 @@ const data = [
     const phoneBook = renderPhoneBook(app, title);
     const {
       list,
+      thead,
       logo,
       btnAdd,
       formOverlay,
@@ -285,6 +290,22 @@ const data = [
       document.querySelectorAll('.delete').forEach(del => {
         del.classList.toggle('is-visible');
       });
+    });
+
+    thead.addEventListener('click', e => {
+      if (e.target.closest('.name')) {
+        allRow.sort((tr1, tr2) => tr1.tdName > tr2.tdName ? 1 : -1);
+        list.innerHTML = '';
+        list.append(...allRow);
+      }
+    });
+
+    thead.addEventListener('click', e => {
+      if (e.target.closest('.surname')) {
+        allRow.sort((tr1, tr2) => tr1.tdSurname > tr2.tdSurname ? 1 : -1);
+        list.innerHTML = '';
+        list.append(...allRow);
+      }
     });
 
     list.addEventListener('click', e => {
