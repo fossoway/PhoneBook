@@ -1,34 +1,31 @@
 'use strict';
 
 
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-];
-
-
 {
-  const addContactData = (contact) => {
-    data.push(contact);
+  // const addContactData = (contact) => {
+  //   data.push(contact);
+  // };
+
+
+  const getStorage = (key) => {
+    const phoneBook = JSON.parse(localStorage.getItem(key)) || [];
+    return phoneBook;
   };
+
+
+  const setStorage = (key, value) => {
+    const phoneBook = getStorage(key);
+    phoneBook.push(value);
+    localStorage.setItem(key, JSON.stringify(phoneBook));
+  };
+
+
+  const removeStorage = (key, number) => {
+    const phoneBook = getStorage(key);
+    const index = phoneBook.findIndex(i => i.phone === number);
+    phoneBook.splice(index, 1);
+    localStorage.setItem(key, JSON.stringify(phoneBook));
+  }
 
 
   const createContainer = () => {
@@ -235,7 +232,8 @@ const data = [
   };
 
 
-  const renderContacts = (elem, data) => {
+  const renderContacts = (elem, key) => {
+    const data = getStorage(key);
     const allRow = data.map(createRow);
     elem.append(...allRow);
     return allRow;
@@ -292,6 +290,8 @@ const data = [
     list.addEventListener('click', e => {
       if (e.target.closest('.del-icon')) {
         e.target.closest('.contact').remove();
+        const phone = e.target.closest('.contact').phoneLink.innerText;
+        removeStorage('phoneBook', phone);
       }
     });
   };
@@ -308,13 +308,33 @@ const data = [
       const formData = new FormData(e.target);
 
       const newContact = Object.fromEntries(formData);
+      setStorage('phoneBook', newContact);
       addContactPage(newContact, list);
-      addContactData(newContact);
+
 
       form.reset();
       closeModal();
     });
   };
+
+
+  // const sort = (thead, allRow, list) => {
+  //   thead.addEventListener('click', e => {
+  //     console.log(`список в сорте:`, list);
+  //     if (e.target.closest('.name')) {
+  //       allRow.sort((tr1, tr2) => tr1.tdName > tr2.tdName ? 1 : -1);
+  //       list.innerHTML = '';
+  //       list.append(...allRow);
+  //       localStorage.setItem('phoneBook', JSON.stringify(allRow))
+  //     }
+  //     if (e.target.closest('.surname')) {
+  //       allRow.sort((tr1, tr2) => tr1.tdSurname > tr2.tdSurname ? 1 : -1);
+  //       list.innerHTML = '';
+  //       list.append(...allRow);
+  //       localStorage.setItem('phoneBook', JSON.stringify(allRow))
+  //     }
+  //   });
+  // };
 
 
   const init = (selectorApp, title) => {
@@ -329,30 +349,23 @@ const data = [
       btnDel,
     } = renderPhoneBook(app, title);
 
-    const allRow = renderContacts(list, data);
+    console.log(`список в init:`, list);
+
+    const allRow = renderContacts(list, 'phoneBook');
     const {closeModal} = modalControl(btnAdd, formOverlay);
+
 
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
+    sort(thead, allRow, list);
 
 
-    thead.addEventListener('click', e => {
-      if (e.target.closest('.name')) {
-        allRow.sort((tr1, tr2) => tr1.tdName > tr2.tdName ? 1 : -1);
-        list.innerHTML = '';
-        list.append(...allRow);
-      }
-    });
-
-    thead.addEventListener('click', e => {
-      if (e.target.closest('.surname')) {
-        allRow.sort((tr1, tr2) => tr1.tdSurname > tr2.tdSurname ? 1 : -1);
-        list.innerHTML = '';
-        list.append(...allRow);
-      }
-    });
   };
 
+
   window.phoneBookInit = init;
+
+
+  localStorage.setItem('now', Date.now());
 }
