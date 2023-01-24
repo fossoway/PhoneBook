@@ -358,7 +358,7 @@
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
-    sort(thead, allRow, list);
+    // sort(thead, allRow, list);
 
 
   };
