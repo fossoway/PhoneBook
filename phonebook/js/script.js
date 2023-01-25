@@ -318,35 +318,36 @@
   };
 
 
-  const sort = (thead, list) => {
-    const isSort = localStorage.getItem('sort');
-    if (isSort) {
-      const data = JSON.parse(localStorage.getItem(isSort));
-      const newRow = renderContacts(list, 'phoneBook', data);
-      list.innerHTML = '';
-      list.append(...newRow);
-    }
+  const sort = (thead, list, logo) => {
+    // const isSort = localStorage.getItem('sort');
+    // if (isSort) {
+    //   const data = JSON.parse(localStorage.getItem(isSort));
+    //   const newRow = renderContacts(list, 'phoneBook', data);
+    //   list.innerHTML = '';
+    //   list.append(...newRow);
+    // }
 
     thead.addEventListener('click', e => {
       if (e.target.closest('.name')) {
         const data = getStorage('phoneBook');
         data.sort((tr1, tr2) => tr1.name > tr2.name ? 1 : -1);
         const newRow = renderContacts(list, 'phoneBook', data);
-        localStorage.setItem('name', JSON.stringify(data));
+        localStorage.setItem('phoneBook', JSON.stringify(data));
         list.innerHTML = '';
         list.append(...newRow);
-        localStorage.setItem('sort', 'name');
+        hoverRow(newRow, logo);
       }
 
       if (e.target.closest('.surname')) {
         const data = getStorage('phoneBook');
         data.sort((tr1, tr2) => tr1.surname > tr2.surname ? 1 : -1);
         const newRow = renderContacts(list, 'phoneBook', data);
-        localStorage.setItem('surname', JSON.stringify(data));
+        localStorage.setItem('phoneBook', JSON.stringify(data));
         list.innerHTML = '';
         list.append(...newRow);
-        localStorage.setItem('sort', 'surname');
+        hoverRow(newRow, logo);
       }
+
     });
   };
 
@@ -364,14 +365,14 @@
     } = renderPhoneBook(app, title);
 
     const data = getStorage('phoneBook');
-    const allRow = renderContacts(list, 'phoneBook', data);
+    let allRow = renderContacts(list, 'phoneBook', data);
     const {closeModal} = modalControl(btnAdd, formOverlay);
 
 
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
-    sort(thead, list);
+    sort(thead, list, logo);
 
 
   };
@@ -379,6 +380,4 @@
 
   window.phoneBookInit = init;
 
-
-  localStorage.setItem('now', Date.now());
 }
