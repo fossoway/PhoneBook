@@ -232,8 +232,8 @@
   };
 
 
-  const renderContacts = (elem, key) => {
-    const data = getStorage(key);
+  const renderContacts = (elem, key, data) => {
+
     const allRow = data.map(createRow);
     elem.append(...allRow);
     return allRow;
@@ -318,23 +318,37 @@
   };
 
 
-  // const sort = (thead, allRow, list) => {
-  //   thead.addEventListener('click', e => {
-  //     console.log(`список в сорте:`, list);
-  //     if (e.target.closest('.name')) {
-  //       allRow.sort((tr1, tr2) => tr1.tdName > tr2.tdName ? 1 : -1);
-  //       list.innerHTML = '';
-  //       list.append(...allRow);
-  //       localStorage.setItem('phoneBook', JSON.stringify(allRow))
-  //     }
-  //     if (e.target.closest('.surname')) {
-  //       allRow.sort((tr1, tr2) => tr1.tdSurname > tr2.tdSurname ? 1 : -1);
-  //       list.innerHTML = '';
-  //       list.append(...allRow);
-  //       localStorage.setItem('phoneBook', JSON.stringify(allRow))
-  //     }
-  //   });
-  // };
+  const sort = (thead, list) => {
+    const isSort = localStorage.getItem('sort');
+    if (isSort) {
+      const data = JSON.parse(localStorage.getItem(isSort));
+      const newRow = renderContacts(list, 'phoneBook', data);
+      list.innerHTML = '';
+      list.append(...newRow);
+    }
+
+    thead.addEventListener('click', e => {
+      if (e.target.closest('.name')) {
+        const data = getStorage('phoneBook');
+        data.sort((tr1, tr2) => tr1.name > tr2.name ? 1 : -1);
+        const newRow = renderContacts(list, 'phoneBook', data);
+        localStorage.setItem('name', JSON.stringify(data));
+        list.innerHTML = '';
+        list.append(...newRow);
+        localStorage.setItem('sort', 'name');
+      }
+
+      if (e.target.closest('.surname')) {
+        const data = getStorage('phoneBook');
+        data.sort((tr1, tr2) => tr1.surname > tr2.surname ? 1 : -1);
+        const newRow = renderContacts(list, 'phoneBook', data);
+        localStorage.setItem('surname', JSON.stringify(data));
+        list.innerHTML = '';
+        list.append(...newRow);
+        localStorage.setItem('sort', 'surname');
+      }
+    });
+  };
 
 
   const init = (selectorApp, title) => {
@@ -349,16 +363,15 @@
       btnDel,
     } = renderPhoneBook(app, title);
 
-    console.log(`список в init:`, list);
-
-    const allRow = renderContacts(list, 'phoneBook');
+    const data = getStorage('phoneBook');
+    const allRow = renderContacts(list, 'phoneBook', data);
     const {closeModal} = modalControl(btnAdd, formOverlay);
 
 
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
-    // sort(thead, allRow, list);
+    sort(thead, list);
 
 
   };
