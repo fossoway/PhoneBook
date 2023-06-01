@@ -1,5 +1,5 @@
-import * as storage from "./storage.js";
-import { renderContacts } from "./render.js";
+import * as storage from "./storage";
+import { renderContacts } from "./render";
 
 
 export const hoverRow = (allRow, logo) => {

@@ -5,7 +5,7 @@ import {  createHeader,
           createButtonsGroup,
           createFooter,
           createForm,
-          createTable } from "./createElements.js";
+          createTable } from "./createElements";
 
 
 const renderPhoneBook = (app, title) => {

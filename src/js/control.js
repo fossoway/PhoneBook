@@ -1,5 +1,5 @@
-import {setStorage, removeStorage} from "./storage.js";
-import {addContactPage} from "./render.js";
+import {setStorage, removeStorage} from "./storage";
+import {addContactPage} from "./render";
 
 
 const modalControl = (btnAdd, formOverlay) => {

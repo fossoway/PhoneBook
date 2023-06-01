@@ -1,7 +1,11 @@
-import { getStorage } from "./storage.js";
-import { modalControl, deleteControl, formControl } from "./control.js";
-import { hoverRow, sort } from "./services.js";
-import { renderPhoneBook, renderContacts } from "./render.js";
+import { getStorage } from "./js/storage";
+import { modalControl, deleteControl, formControl } from "./js/control";
+import { hoverRow, sort } from "./js/services";
+import { renderPhoneBook, renderContacts } from "./js/render";
+
+import './css/normalize.css';
+import './css/bootstrap.min.css';
+import './css/style.css';
 
 
   const init = (selectorApp, title) => {

@@ -48,6 +48,7 @@ const createButtonsGroup = params => {
 
     return button;
   });
+
   btnWrapper.append(...btns);
 
   return {
